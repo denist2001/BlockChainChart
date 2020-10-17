@@ -1,0 +1,33 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+
+    ext.kotlin_version = "1.4.10"
+    ext.hilt_version = '2.29.1-alpha'
+    ext.androidx_hilt_version = "1.0.0-alpha02"
+    ext.retrofit_version = "2.9.0"
+    ext.kotlin_ktx_version = "1.1.0"
+    ext.rx_android_version = "2.1.1"
+    ext.rx_java_version = "2.2.7"
+
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.1.0"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
