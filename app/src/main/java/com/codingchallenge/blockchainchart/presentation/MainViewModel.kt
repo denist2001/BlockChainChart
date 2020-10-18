@@ -8,14 +8,10 @@ import androidx.lifecycle.ViewModel
 import com.codingchallenge.blockchainchart.domain.BitCoinRepository
 import com.codingchallenge.blockchainchart.domain.LayerConverter
 import com.codingchallenge.blockchainchart.domain.RepositoryException
-import com.google.gson.JsonIOException
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.exceptions.CompositeException
 import io.reactivex.schedulers.Schedulers
-import java.io.IOException
-import java.lang.IllegalArgumentException
-import java.net.UnknownHostException
 
 class MainViewModel @ViewModelInject constructor(
     private val repository: BitCoinRepository,
@@ -39,13 +35,17 @@ class MainViewModel @ViewModelInject constructor(
         val disposable = repository.loadData()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .map { apiResponse ->
-                converter.convertFrom(apiResponse)
+            .map { domainData ->
+                converter.convertFrom(domainData)
             }
             .doOnError { throwable ->
-                handleThrowable(throwable)
+                val exceptions = (throwable as CompositeException).exceptions
+                for (exception in exceptions) {
+                    if (exception is RepositoryException) {
+                        handleThrowable(exception)
+                    }
+                }
             }
-            .retry(5)
             .subscribe({ presentationData ->
                 _stateLiveData.postValue(
                     MainViewModelState.DataLoaded(
@@ -58,31 +58,22 @@ class MainViewModel @ViewModelInject constructor(
         disposables.add(disposable)
     }
 
-    private fun handleThrowable(throwable: Throwable) {
-        when (throwable) {
-            is HttpException -> {
+    private fun handleThrowable(exception: RepositoryException) {
+        when (exception.error) {
+            RepositoryException.Error.NETWORK_ERROR -> {
                 _stateLiveData.postValue(MainViewModelState.Error("Network error"))
-                throw RepositoryException(RepositoryException.Error.NETWORK_ERROR)
             }
-            is UnknownHostException -> {
+            RepositoryException.Error.CONNECTION_ERROR -> {
                 _stateLiveData.postValue(MainViewModelState.Error("Connection error"))
-                throw RepositoryException(RepositoryException.Error.CONNECTION_ERROR)
             }
-            is IOException -> {
+            RepositoryException.Error.PARSING_ERROR -> {
                 _stateLiveData.postValue(MainViewModelState.Error("Parsing error"))
-                throw RepositoryException(RepositoryException.Error.PARSING_ERROR)
             }
-            is IllegalArgumentException -> {
+            RepositoryException.Error.EMPTY_DATA -> {
                 _stateLiveData.postValue(MainViewModelState.Error("Invalid data"))
-                throw RepositoryException(RepositoryException.Error.EMPTY_DATA)
             }
-            is JsonIOException -> {
-                _stateLiveData.postValue(MainViewModelState.Error("Invalid data"))
-                throw RepositoryException(RepositoryException.Error.EMPTY_DATA)
-            }
-            else -> throwable.message?.let {
-                _stateLiveData.postValue(MainViewModelState.Error(it))
-                throw RepositoryException(RepositoryException.Error.UNKNOWN_ERROR)
+            else -> {
+                _stateLiveData.postValue(MainViewModelState.Error("Unknown error"))
             }
         }
     }

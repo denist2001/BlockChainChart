@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
             renderState(state)
         }
         graphViewConfig = GraphViewConfig(lineChart)
-        graphViewConfig.init()
         if (savedInstanceState == null) {
             viewModel.onAction(MainViewModelAction.LoadData)
         }

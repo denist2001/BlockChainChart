@@ -19,7 +19,7 @@ class GraphViewConfig(private val lineChart: LineChart) {
     private val axisTextColor = Color.rgb(255, 192, 56)
     private val crossPinterColor = Color.rgb(244, 117, 117)
 
-    fun init() {
+    init {
         lineChartConfig()
         timeAxisConfig(lineChart.xAxis)
         valueAxisConfig(lineChart.axisLeft)
