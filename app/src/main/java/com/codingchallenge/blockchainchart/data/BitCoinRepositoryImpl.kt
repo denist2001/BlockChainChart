@@ -47,7 +47,7 @@ class BitCoinRepositoryImpl @Inject constructor(
             is JsonIOException -> {
                 throw RepositoryException(RepositoryException.Error.EMPTY_DATA)
             }
-            else -> throwable.message?.let {
+            else -> {
                 throw RepositoryException(RepositoryException.Error.UNKNOWN_ERROR)
             }
         }

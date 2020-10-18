@@ -1,6 +1,5 @@
 package com.codingchallenge.blockchainchart.presentation
 
-import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -38,14 +37,6 @@ class MainViewModel @ViewModelInject constructor(
             .map { domainData ->
                 converter.convertFrom(domainData)
             }
-            .doOnError { throwable ->
-                val exceptions = (throwable as CompositeException).exceptions
-                for (exception in exceptions) {
-                    if (exception is RepositoryException) {
-                        handleThrowable(exception)
-                    }
-                }
-            }
             .subscribe({ presentationData ->
                 _stateLiveData.postValue(
                     MainViewModelState.DataLoaded(
@@ -53,7 +44,12 @@ class MainViewModel @ViewModelInject constructor(
                     )
                 )
             }) { throwable ->
-                Log.e(this.toString(), "startLoading: " + throwable.message)
+                val exceptions = (throwable as CompositeException).exceptions
+                for (exception in exceptions) {
+                    if (exception is RepositoryException) {
+                        handleThrowable(exception)
+                    }
+                }
             }
         disposables.add(disposable)
     }

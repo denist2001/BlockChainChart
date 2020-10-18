@@ -8,6 +8,8 @@ buildscript {
     ext.kotlin_ktx_version = "1.1.0"
     ext.rx_android_version = "2.1.1"
     ext.rx_java_version = "2.2.7"
+    ext.mockito_versions = "3.4.0"
+    ext.arch_version = "2.1.0"
 
     repositories {
         google()
