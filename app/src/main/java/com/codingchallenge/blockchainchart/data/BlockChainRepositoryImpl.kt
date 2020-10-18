@@ -1,6 +1,6 @@
 package com.codingchallenge.blockchainchart.data
 
-import com.codingchallenge.blockchainchart.domain.BitCoinRepository
+import com.codingchallenge.blockchainchart.domain.BlockChainRepository
 import com.codingchallenge.blockchainchart.domain.DomainData
 import com.codingchallenge.blockchainchart.domain.LayerConverter
 import com.codingchallenge.blockchainchart.domain.RepositoryException
@@ -12,10 +12,10 @@ import java.io.IOException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
-class BitCoinRepositoryImpl @Inject constructor(
+class BlockChainRepositoryImpl @Inject constructor(
     private val service: RepositoryService,
     private val converter: LayerConverter
-) : BitCoinRepository {
+) : BlockChainRepository {
 
     override fun loadData(): Observable<DomainData> {
         return service.loadData()

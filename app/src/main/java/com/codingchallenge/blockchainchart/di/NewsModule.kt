@@ -1,8 +1,8 @@
 package com.codingchallenge.blockchainchart.di
 
-import com.codingchallenge.blockchainchart.data.BitCoinRepositoryImpl
+import com.codingchallenge.blockchainchart.data.BlockChainRepositoryImpl
 import com.codingchallenge.blockchainchart.data.RepositoryService
-import com.codingchallenge.blockchainchart.domain.BitCoinRepository
+import com.codingchallenge.blockchainchart.domain.BlockChainRepository
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -43,6 +43,6 @@ class NewsModule {
 
     @Provides
     @Singleton
-    fun provideRepository(repository: BitCoinRepositoryImpl): BitCoinRepository = repository
+    fun provideRepository(repository: BlockChainRepositoryImpl): BlockChainRepository = repository
 
 }

@@ -19,8 +19,8 @@ import java.io.IOException
 import java.net.UnknownHostException
 
 @RunWith(MockitoJUnitRunner::class)
-class BitCoinRepositoryImplTest {
-    private lateinit var subject: BitCoinRepositoryImpl
+class BlockChainRepositoryImplTest {
+    private lateinit var subject: BlockChainRepositoryImpl
 
     @Rule
     @JvmField
@@ -41,7 +41,7 @@ class BitCoinRepositoryImplTest {
 
     @Before
     fun setUp() {
-        subject = BitCoinRepositoryImpl(service, converter)
+        subject = BlockChainRepositoryImpl(service, converter)
     }
 
     @Test

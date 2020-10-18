@@ -2,7 +2,7 @@ package com.codingchallenge.blockchainchart.presentation
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.codingchallenge.blockchainchart.domain.BitCoinRepository
+import com.codingchallenge.blockchainchart.domain.BlockChainRepository
 import com.codingchallenge.blockchainchart.domain.DomainData
 import com.codingchallenge.blockchainchart.domain.LayerConverter
 import com.codingchallenge.blockchainchart.domain.RepositoryException
@@ -37,7 +37,7 @@ class MainViewModelTest {
     val testInstantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var repository: BitCoinRepository
+    private lateinit var repository: BlockChainRepository
 
     @Mock
     private lateinit var converter: LayerConverter

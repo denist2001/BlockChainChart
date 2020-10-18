@@ -4,7 +4,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.codingchallenge.blockchainchart.domain.BitCoinRepository
+import com.codingchallenge.blockchainchart.domain.BlockChainRepository
 import com.codingchallenge.blockchainchart.domain.LayerConverter
 import com.codingchallenge.blockchainchart.domain.RepositoryException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,7 +13,7 @@ import io.reactivex.exceptions.CompositeException
 import io.reactivex.schedulers.Schedulers
 
 class MainViewModel @ViewModelInject constructor(
-    private val repository: BitCoinRepository,
+    private val repository: BlockChainRepository,
     private val converter: LayerConverter
 ) : ViewModel() {
 
