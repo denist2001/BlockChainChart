@@ -41,7 +41,8 @@ class BlockChainRepositoryImplTest {
 
     @Test
     fun ifNetworkErrorHandlesCorrectly() {
-        `when`(service.loadData()).thenReturn(Observable.error(mock(HttpException::class.java)))
+        `when`(service.loadData(anyString(), anyString(), anyString()))
+            .thenReturn(Observable.error(mock(HttpException::class.java)))
         subject.loadData()
             .test()
             .assertError(CompositeException::class.java)
@@ -49,7 +50,8 @@ class BlockChainRepositoryImplTest {
 
     @Test
     fun ifConnectionErrorHandlesCorrectly() {
-        `when`(service.loadData()).thenReturn(Observable.error(UnknownHostException()))
+        `when`(service.loadData(anyString(), anyString(), anyString()))
+            .thenReturn(Observable.error(UnknownHostException()))
         subject.loadData()
             .test()
             .assertError(CompositeException::class.java)
@@ -57,7 +59,8 @@ class BlockChainRepositoryImplTest {
 
     @Test
     fun ifIOErrorHandlesCorrectly() {
-        `when`(service.loadData()).thenReturn(Observable.error(IOException()))
+        `when`(service.loadData(anyString(), anyString(), anyString()))
+            .thenReturn(Observable.error(IOException()))
         subject.loadData()
             .test()
             .assertError(CompositeException::class.java)
@@ -65,7 +68,8 @@ class BlockChainRepositoryImplTest {
 
     @Test
     fun ifParsingErrorHandlesCorrectly() {
-        `when`(service.loadData()).thenReturn(Observable.just(mockedApiResponse))
+        `when`(service.loadData(anyString(), anyString(), anyString()))
+            .thenReturn(Observable.just(mockedApiResponse))
         `when`(converter.convertFrom(mockedApiResponse)).thenThrow(IllegalArgumentException::class.java)
         subject.loadData()
             .test()
@@ -74,7 +78,8 @@ class BlockChainRepositoryImplTest {
 
     @Test
     fun ifEmptyDataErrorHandlesCorrectly() {
-        `when`(service.loadData()).thenReturn(Observable.just(mockedApiResponse))
+        `when`(service.loadData(anyString(), anyString(), anyString()))
+            .thenReturn(Observable.just(mockedApiResponse))
         `when`(converter.convertFrom(mockedApiResponse)).thenThrow(JsonIOException::class.java)
         subject.loadData()
             .test()
@@ -83,7 +88,8 @@ class BlockChainRepositoryImplTest {
 
     @Test
     fun ifUnknownErrorHandlesCorrectly() {
-        `when`(service.loadData()).thenReturn(Observable.error(Exception()))
+        `when`(service.loadData(anyString(), anyString(), anyString()))
+            .thenReturn(Observable.error(Exception()))
         subject.loadData()
             .test()
             .assertError(CompositeException::class.java)
