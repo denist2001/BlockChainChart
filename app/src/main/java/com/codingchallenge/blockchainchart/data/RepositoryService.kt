@@ -6,6 +6,10 @@ import retrofit2.http.*
 
 interface RepositoryService {
 
-    @GET("market-price?timespan=5weeks&rollingAverage=8hours&format=json")
-    fun loadData(): Observable<ApiResponse>
+    @GET("market-price")
+    fun loadData(
+        @Query("timespan") timespan: String,
+        @Query("rollingAverage") rollingAverage: String,
+        @Query("format") format: String
+    ): Observable<ApiResponse>
 }

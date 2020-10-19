@@ -16,9 +16,12 @@ class BlockChainRepositoryImpl @Inject constructor(
     private val service: RepositoryService,
     private val converter: LayerConverter
 ) : BlockChainRepository {
+    private val timespan = "5weeks"
+    private val rollingAverage = "8hours"
+    private val format = "json"
 
     override fun loadData(): Observable<DomainData> {
-        return service.loadData()
+        return service.loadData(timespan, rollingAverage, format)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .map { apiResponse ->
