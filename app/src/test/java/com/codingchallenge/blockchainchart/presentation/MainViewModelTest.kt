@@ -7,7 +7,6 @@ import com.codingchallenge.blockchainchart.domain.DomainData
 import com.codingchallenge.blockchainchart.domain.LayerConverter
 import com.codingchallenge.blockchainchart.domain.RepositoryException
 import com.codingchallenge.blockchainchart.rules.RxTrampolineSchedulerRule
-import com.codingchallenge.blockchainchart.rules.TestSchedulerRule
 import io.reactivex.Observable
 import io.reactivex.exceptions.CompositeException
 import junit.framework.Assert.assertEquals
@@ -28,10 +27,6 @@ class MainViewModelTest {
     @Rule
     @JvmField
     var rxTrampolineSchedulerRule = RxTrampolineSchedulerRule()
-
-    @Rule
-    @JvmField
-    var testSchedulerRule = TestSchedulerRule()
 
     @get:Rule
     val testInstantTaskExecutorRule = InstantTaskExecutorRule()

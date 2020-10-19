@@ -3,7 +3,6 @@ package com.codingchallenge.blockchainchart.data
 import com.codingchallenge.blockchainchart.data.model.ApiResponse
 import com.codingchallenge.blockchainchart.domain.LayerConverter
 import com.codingchallenge.blockchainchart.rules.RxTrampolineSchedulerRule
-import com.codingchallenge.blockchainchart.rules.TestSchedulerRule
 import com.google.gson.JsonIOException
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import io.reactivex.Observable
@@ -25,10 +24,6 @@ class BlockChainRepositoryImplTest {
     @Rule
     @JvmField
     var rxTrampolineSchedulerRule = RxTrampolineSchedulerRule()
-
-    @Rule
-    @JvmField
-    var testSchedulerRule = TestSchedulerRule()
 
     @Mock
     private lateinit var service: RepositoryService
