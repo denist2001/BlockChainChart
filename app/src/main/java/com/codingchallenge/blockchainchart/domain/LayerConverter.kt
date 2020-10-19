@@ -24,12 +24,4 @@ class LayerConverter @Inject constructor() {
         }
         return DomainData(apiResponse.name, entries)
     }
-
-    fun convertFrom(presentationEntries: List<PresentationEntry>): List<Entry> {
-        val entries = mutableListOf<Entry>()
-        for (value in presentationEntries) {
-            entries.add(Entry(value.timestamp.toFloat(), value.value))
-        }
-        return entries
-    }
 }

@@ -1,7 +1,7 @@
 package com.codingchallenge.blockchainchart.domain
 
 import com.codingchallenge.blockchainchart.data.model.ApiResponse
-import com.codingchallenge.blockchainchart.data.model.Value
+import com.codingchallenge.blockchainchart.data.model.BitCoinValue
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import org.junit.Before
@@ -30,8 +30,8 @@ class LayerConverterTest {
 
     @Test
     fun convertApiResponseToDomainData() {
-        val value1 = Value(1599955200, 10446.44F)
-        val value2 = Value(1600041600, 10330.77F)
+        val value1 = BitCoinValue(1599955200, 10446.44F)
+        val value2 = BitCoinValue(1600041600, 10330.77F)
         val apiResponse = ApiResponse(
             "OK",
             "Market Price (USD)",

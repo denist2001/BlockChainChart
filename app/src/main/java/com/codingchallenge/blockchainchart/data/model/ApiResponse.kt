@@ -40,5 +40,5 @@ data class ApiResponse(
     val description: String,
     @SerializedName("values")
     @Expose
-    val values: List<Value>
+    val values: List<BitCoinValue>
 )

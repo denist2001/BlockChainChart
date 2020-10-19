@@ -25,20 +25,20 @@ class BlockChainRepositoryImpl @Inject constructor(
                 converter.convertFrom(apiResponse)
             }
             .doOnError { throwable ->
-                handleThrowable(throwable)
+                throwable.toBlockChainRepositoryException()
             }
             .retry(5)
     }
 
-    private fun handleThrowable(throwable: Throwable) {
-        when (throwable) {
-            is HttpException -> throw RepositoryException(RepositoryException.Error.NETWORK_ERROR)
-            is UnknownHostException -> throw RepositoryException(RepositoryException.Error.CONNECTION_ERROR)
-            is IOException -> throw RepositoryException(RepositoryException.Error.PARSING_ERROR)
-            is IllegalArgumentException -> throw RepositoryException(RepositoryException.Error.EMPTY_DATA)
-            is JsonIOException -> throw RepositoryException(RepositoryException.Error.EMPTY_DATA)
-            else -> throw RepositoryException(RepositoryException.Error.UNKNOWN_ERROR)
-        }
-    }
+}
 
+private fun Throwable.toBlockChainRepositoryException() {
+    when (this) {
+        is HttpException -> throw RepositoryException(RepositoryException.Error.NETWORK_ERROR)
+        is UnknownHostException -> throw RepositoryException(RepositoryException.Error.CONNECTION_ERROR)
+        is IOException -> throw RepositoryException(RepositoryException.Error.PARSING_ERROR)
+        is IllegalArgumentException -> throw RepositoryException(RepositoryException.Error.EMPTY_DATA)
+        is JsonIOException -> throw RepositoryException(RepositoryException.Error.EMPTY_DATA)
+        else -> throw RepositoryException(RepositoryException.Error.UNKNOWN_ERROR)
+    }
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiObject
 import androidx.test.uiautomator.UiSelector
@@ -30,8 +31,9 @@ class MainFunctionalityTest {
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
-    //    @get:Rule
-//    val activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
+    @get:Rule
+    val activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
+
     @get:Rule
     val activityScenarioTestRule = ActivityScenarioRule(MainActivity::class.java)
 

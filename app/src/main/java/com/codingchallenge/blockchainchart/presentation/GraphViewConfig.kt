@@ -1,13 +1,14 @@
 package com.codingchallenge.blockchainchart.presentation
 
 import android.graphics.Color
-import com.codingchallenge.blockchainchart.domain.LayerConverter
 import com.codingchallenge.blockchainchart.presentation.model.PresentationData
+import com.codingchallenge.blockchainchart.presentation.model.PresentationEntry
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
@@ -20,8 +21,6 @@ class GraphViewConfig(private val lineChart: LineChart) {
     private val boarder = 20f
     private val axisTextColor = Color.rgb(255, 192, 56)
     private val crossPinterColor = Color.rgb(244, 117, 117)
-
-    private val converter = LayerConverter()
 
     init {
         lineChartConfig()
@@ -50,7 +49,7 @@ class GraphViewConfig(private val lineChart: LineChart) {
     }
 
     private fun lineConfig(presentation: PresentationData): LineDataSet {
-        val entries = converter.convertFrom(presentation.entries)
+        val entries = convert(presentation.entries)
         val lineDataSet = LineDataSet(entries, presentation.label)
         lineDataSet.axisDependency = YAxis.AxisDependency.LEFT
         lineDataSet.color = ColorTemplate.getHoloBlue()
@@ -110,5 +109,13 @@ class GraphViewConfig(private val lineChart: LineChart) {
 
         val rightAxis: YAxis = lineChart.axisRight
         rightAxis.isEnabled = false
+    }
+
+    private fun convert(presentationEntries: List<PresentationEntry>): List<Entry> {
+        val entries = mutableListOf<Entry>()
+        for (value in presentationEntries) {
+            entries.add(Entry(value.timestamp.toFloat(), value.value))
+        }
+        return entries
     }
 }
