@@ -1,88 +1,55 @@
 package com.codingchallenge.blockchainchart
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
-import androidx.test.uiautomator.UiObject
-import androidx.test.uiautomator.UiSelector
 import com.codingchallenge.blockchainchart.di.NetworkModule
-import com.codingchallenge.blockchainchart.presentation.MainActivity
-import com.codingchallenge.blockchainchart.utils.getStringFrom
-import dagger.hilt.android.testing.HiltAndroidRule
+import com.codingchallenge.blockchainchart.utils.waitUntilViewAppears
+import com.codingchallenge.blockchainchart.utils.waitUntilViewDisappears
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
-import okhttp3.mockwebserver.Dispatcher
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
-import okhttp3.mockwebserver.RecordedRequest
-import org.junit.Before
-import org.junit.Rule
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @UninstallModules(NetworkModule::class)
 @HiltAndroidTest
-class MainFunctionalityTest {
-
-    @get:Rule
-    val hiltRule = HiltAndroidRule(this)
-
-    @get:Rule
-    val activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
-
-    @get:Rule
-    val activityScenarioTestRule = ActivityScenarioRule(MainActivity::class.java)
-
-    private lateinit var mockServer: MockWebServer
-
-    @Before
-    fun setUp() {
-        hiltRule.inject()
-        mockServer = MockWebServer()
-        mockServer.start(8080)
-    }
+class MainFunctionalityTest : BaseTest() {
+    private lateinit var uiDevice: UiDevice
 
     @Test
     fun checkIfProgressBarAppearsWhenLoadingStarts() {
         setDispatcher("valid_course.json", 200)
-        waitUntilProgressBarAppears(R.id.progress_pb, 1000)
-        waitUntilProgressBarDisappears(R.id.progress_pb, 1000)
+        waitUntilViewAppears(R.id.progress_pb, 500)
+        waitUntilViewDisappears(R.id.progress_pb, 500)
     }
 
-    private fun setDispatcher(fileName: String, responseCode: Int) {
-        mockServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                return MockResponse()
-                    .setResponseCode(responseCode)
-                    .setBody(getStringFrom(fileName))
-            }
-        }
+    @Test
+    fun checkIfDataIsValid_shouldShowGraphView() {
+        setDispatcher("valid_course.json", 200)
+        waitUntilViewAppears(R.id.line_chart_view, 500)
     }
 
-    fun waitUntilProgressBarAppears(
-        viewId: Int,
-        timeoutInMs: Long = 3
-    ) {
-        getUiObject(viewId).waitForExists(timeoutInMs)
-    }
-
-    fun waitUntilProgressBarDisappears(
-        viewId: Int,
-        timeoutInMs: Long = 3
-    ) {
-        getUiObject(viewId).waitUntilGone(timeoutInMs)
-    }
-
-    private fun getUiObject(viewId: Int): UiObject {
-        val resourceId =
-            ApplicationProvider.getApplicationContext<Context>().resources.getResourceName(viewId)
-        val selector = UiSelector().resourceId(resourceId)
-        return UiDevice.getInstance(androidx.test.platform.app.InstrumentationRegistry.getInstrumentation())
-            .findObject(selector)
+    @Test
+    fun checkIfDeviceRotates_shouldSendOnlyOneNetworkRequest() {
+        setDispatcher("valid_course.json", 200)
+        uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        uiDevice.unfreezeRotation()
+        uiDevice.setOrientationNatural()
+        waitUntilViewAppears(R.id.line_chart_view, 500)
+        onView(withId(R.id.line_chart_view)).check(matches(isDisplayed()))
+        uiDevice.setOrientationLeft()
+        activityScenarioTestRule.scenario.recreate()
+        waitUntilViewAppears(R.id.line_chart_view, 500)
+        onView(withId(R.id.line_chart_view)).check(matches(isDisplayed()))
+        uiDevice.setOrientationNatural()
+        activityScenarioTestRule.scenario.recreate()
+        assertEquals(1, mockServer.requestCount)
     }
 
 }

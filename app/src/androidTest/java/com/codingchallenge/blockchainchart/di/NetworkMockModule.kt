@@ -5,6 +5,7 @@ import com.codingchallenge.blockchainchart.data.RepositoryService
 import com.codingchallenge.blockchainchart.domain.BlockChainRepository
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,6 +33,7 @@ class NetworkMockModule {
     fun provideRetrofit(gson: Gson, url: String) = Retrofit.Builder()
         .baseUrl(url)
         .addConverterFactory(GsonConverterFactory.create(gson))
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
 
     @Provides
