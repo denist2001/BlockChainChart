@@ -1,6 +1,8 @@
 package com.codingchallenge.blockchainchart.presentation
 
 import android.graphics.Color
+import com.codingchallenge.blockchainchart.domain.LayerConverter
+import com.codingchallenge.blockchainchart.presentation.model.PresentationData
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
@@ -19,6 +21,8 @@ class GraphViewConfig(private val lineChart: LineChart) {
     private val axisTextColor = Color.rgb(255, 192, 56)
     private val crossPinterColor = Color.rgb(244, 117, 117)
 
+    private val converter = LayerConverter()
+
     init {
         lineChartConfig()
         timeAxisConfig(lineChart.xAxis)
@@ -28,10 +32,10 @@ class GraphViewConfig(private val lineChart: LineChart) {
     fun setDataToChart(presentation: PresentationData) {
         val leftAxis: YAxis = lineChart.axisLeft
         val max = presentation.entries.maxOf { entry ->
-            entry.y
+            entry.value
         }
         val min = presentation.entries.minOf { entry ->
-            entry.y
+            entry.value
         }
         leftAxis.axisMinimum = min
         leftAxis.axisMaximum = max
@@ -46,7 +50,8 @@ class GraphViewConfig(private val lineChart: LineChart) {
     }
 
     private fun lineConfig(presentation: PresentationData): LineDataSet {
-        val lineDataSet = LineDataSet(presentation.entries, presentation.label)
+        val entries = converter.convertFrom(presentation.entries)
+        val lineDataSet = LineDataSet(entries, presentation.label)
         lineDataSet.axisDependency = YAxis.AxisDependency.LEFT
         lineDataSet.color = ColorTemplate.getHoloBlue()
         lineDataSet.valueTextColor = ColorTemplate.getHoloBlue()

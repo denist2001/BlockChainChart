@@ -16,7 +16,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(ApplicationComponent::class)
-class NewsModule {
+class NetworkModule {
 
     @Provides
     @Singleton

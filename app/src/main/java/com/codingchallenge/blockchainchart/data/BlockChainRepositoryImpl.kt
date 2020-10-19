@@ -32,24 +32,12 @@ class BlockChainRepositoryImpl @Inject constructor(
 
     private fun handleThrowable(throwable: Throwable) {
         when (throwable) {
-            is HttpException -> {
-                throw RepositoryException(RepositoryException.Error.NETWORK_ERROR)
-            }
-            is UnknownHostException -> {
-                throw RepositoryException(RepositoryException.Error.CONNECTION_ERROR)
-            }
-            is IOException -> {
-                throw RepositoryException(RepositoryException.Error.PARSING_ERROR)
-            }
-            is IllegalArgumentException -> {
-                throw RepositoryException(RepositoryException.Error.EMPTY_DATA)
-            }
-            is JsonIOException -> {
-                throw RepositoryException(RepositoryException.Error.EMPTY_DATA)
-            }
-            else -> {
-                throw RepositoryException(RepositoryException.Error.UNKNOWN_ERROR)
-            }
+            is HttpException -> throw RepositoryException(RepositoryException.Error.NETWORK_ERROR)
+            is UnknownHostException -> throw RepositoryException(RepositoryException.Error.CONNECTION_ERROR)
+            is IOException -> throw RepositoryException(RepositoryException.Error.PARSING_ERROR)
+            is IllegalArgumentException -> throw RepositoryException(RepositoryException.Error.EMPTY_DATA)
+            is JsonIOException -> throw RepositoryException(RepositoryException.Error.EMPTY_DATA)
+            else -> throw RepositoryException(RepositoryException.Error.UNKNOWN_ERROR)
         }
     }
 

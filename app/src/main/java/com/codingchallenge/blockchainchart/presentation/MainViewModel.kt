@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.codingchallenge.blockchainchart.domain.BlockChainRepository
 import com.codingchallenge.blockchainchart.domain.LayerConverter
 import com.codingchallenge.blockchainchart.domain.RepositoryException
+import com.codingchallenge.blockchainchart.presentation.model.PresentationData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.exceptions.CompositeException
@@ -56,21 +57,25 @@ class MainViewModel @ViewModelInject constructor(
 
     private fun handleThrowable(exception: RepositoryException) {
         when (exception.error) {
-            RepositoryException.Error.NETWORK_ERROR -> {
-                _stateLiveData.postValue(MainViewModelState.Error("Network error"))
-            }
-            RepositoryException.Error.CONNECTION_ERROR -> {
-                _stateLiveData.postValue(MainViewModelState.Error("Connection error"))
-            }
-            RepositoryException.Error.PARSING_ERROR -> {
-                _stateLiveData.postValue(MainViewModelState.Error("Parsing error"))
-            }
-            RepositoryException.Error.EMPTY_DATA -> {
-                _stateLiveData.postValue(MainViewModelState.Error("Invalid data"))
-            }
-            else -> {
-                _stateLiveData.postValue(MainViewModelState.Error("Unknown error"))
-            }
+            RepositoryException.Error.NETWORK_ERROR -> _stateLiveData.postValue(
+                MainViewModelState.Error(
+                    "Network error"
+                )
+            )
+            RepositoryException.Error.CONNECTION_ERROR -> _stateLiveData.postValue(
+                MainViewModelState.Error("Connection error")
+            )
+            RepositoryException.Error.PARSING_ERROR -> _stateLiveData.postValue(
+                MainViewModelState.Error(
+                    "Parsing error"
+                )
+            )
+            RepositoryException.Error.EMPTY_DATA -> _stateLiveData.postValue(
+                MainViewModelState.Error(
+                    "Invalid data"
+                )
+            )
+            else -> _stateLiveData.postValue(MainViewModelState.Error("Unknown error"))
         }
     }
 
