@@ -22,10 +22,10 @@ class LayerConverterTest {
         val domainData = DomainData("Domain Data", listOf(domainEntry1, domainEntry2))
         val presentationData = subject.convertFrom(domainData)
         assertEquals("Domain Data", presentationData.label)
-        assertTrue(1.23456792E8F == presentationData.entries[0].x)
-        assertEquals(1.1F, presentationData.entries[0].y)
-        assertTrue(9.8765434E8F == presentationData.entries[1].x)
-        assertEquals(2.2F, presentationData.entries[1].y)
+        assertTrue(123456789L == presentationData.entries[0].timestamp)
+        assertEquals(1.1F, presentationData.entries[0].value)
+        assertTrue(987654321L == presentationData.entries[1].timestamp)
+        assertEquals(2.2F, presentationData.entries[1].value)
     }
 
     @Test
