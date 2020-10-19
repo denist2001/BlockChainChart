@@ -3,7 +3,6 @@ package com.codingchallenge.blockchainchart.domain
 import com.codingchallenge.blockchainchart.data.model.ApiResponse
 import com.codingchallenge.blockchainchart.presentation.model.PresentationData
 import com.codingchallenge.blockchainchart.presentation.model.PresentationEntry
-import com.github.mikephil.charting.data.Entry
 import javax.inject.Inject
 
 class LayerConverter @Inject constructor() {
